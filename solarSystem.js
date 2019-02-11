@@ -172,7 +172,7 @@ var directionalLight = null;
 var spotLight = null;
 var pointLight = null;
 var ambientLight = null;
-var mapUrl = "../images/checker_large.gif";
+var mapUrl = "images/checker_large.gif";
 
 function createScene(canvas) {
     
@@ -250,16 +250,16 @@ function createScene(canvas) {
 
     //-----------------------create materials-----------//
     //------Sun---------//
-    var sunTextureUrl = "../images/sun.jpg";
-    var sunbumpMapUrl = "../images/sun_bump.jpg";
+    var sunTextureUrl = "images/sun.jpg";
+    var sunbumpMapUrl = "images/sun_bump.jpg";
 
     var sunTexture = new THREE.TextureLoader().load(sunTextureUrl);
     var sunbumpMap = new THREE.TextureLoader().load(sunbumpMapUrl);
 
     var sunMaterial = new THREE.MeshBasicMaterial({ map: sunTexture, bumpMap: sunbumpMap, bumpScale: 0.06 });
     //------Mercury---------//
-    var mercuryTextureUrl = "../images/mercury.jpg";
-    var mercurybumpMapUrl = "../images/mercury_bump.jpg";
+    var mercuryTextureUrl = "images/mercury.jpg";
+    var mercurybumpMapUrl = "images/mercury_bump.jpg";
 
     var mercuryTexture = new THREE.TextureLoader().load(mercuryTextureUrl);
     var mercurybumpMap = new THREE.TextureLoader().load(mercurybumpMapUrl);
@@ -269,8 +269,8 @@ function createScene(canvas) {
     //var mercuryMaterial = new THREE.MeshBasicMaterial({ map: mercuryTexture });
 
     //------Venus---------//
-    var venusTextureUrl = "../images/venus.jpg";
-    var venusbumpMapUrl = "../images/venus_bump.jpg";
+    var venusTextureUrl = "images/venus.jpg";
+    var venusbumpMapUrl = "images/venus_bump.jpg";
 
     var venusTexture = new THREE.TextureLoader().load(venusTextureUrl);
     var venusbumpMap = new THREE.TextureLoader().load(venusbumpMapUrl);
@@ -280,8 +280,8 @@ function createScene(canvas) {
     //var venusMaterial = new THREE.MeshBasicMaterial({ map: venusTexture });
 
     //------Earth---------//
-    var earthTextureUrl = "../images/earth_daymap.jpg";
-    var earthbumpMapUrl = "../images/earth_bump.jpg";
+    var earthTextureUrl = "images/earth_daymap.jpg";
+    var earthbumpMapUrl = "images/earth_bump.jpg";
 
     var earthTexture = new THREE.TextureLoader().load(earthTextureUrl);
     var earthbumpMap = new THREE.TextureLoader().load(earthbumpMapUrl);
@@ -290,8 +290,8 @@ function createScene(canvas) {
     //var earthMaterial = new THREE.MeshBasicMaterial({ map: earthTexture });
 
     //------Mars---------//
-    var marsTextureUrl = "../images/mars.jpg";
-    var marsbumpMapUrl = "../images/mars_bump.jpg";
+    var marsTextureUrl = "images/mars.jpg";
+    var marsbumpMapUrl = "images/mars_bump.jpg";
 
     var marsTexture = new THREE.TextureLoader().load(marsTextureUrl);
     var marsbumpMap = new THREE.TextureLoader().load(marsbumpMapUrl);
@@ -300,8 +300,8 @@ function createScene(canvas) {
     //var marsMaterial = new THREE.MeshBasicMaterial({ map: marsTexture });
 
     //------Jupiter---------//
-    var jupiterTextureUrl = "../images/jupiter.jpg";
-    var jupiterbumpMapUrl = "../images/jupiter_bump.jpg";
+    var jupiterTextureUrl = "images/jupiter.jpg";
+    var jupiterbumpMapUrl = "images/jupiter_bump.jpg";
 
     var jupiterTexture = new THREE.TextureLoader().load(jupiterTextureUrl);
     var jupiterbumpMap = new THREE.TextureLoader().load(jupiterbumpMapUrl);
@@ -310,8 +310,8 @@ function createScene(canvas) {
     //var jupiterMaterial = new THREE.MeshBasicMaterial({ map: jupiterTexture });
 
     //------Saturn---------//
-    var saturnTextureUrl = "../images/saturn.jpg";
-    var saturnbumpMapUrl = "../images/saturn_bump.jpg";
+    var saturnTextureUrl = "images/saturn.jpg";
+    var saturnbumpMapUrl = "images/saturn_bump.jpg";
 
     var saturnTexture = new THREE.TextureLoader().load(saturnTextureUrl);
     var saturnbumpMap = new THREE.TextureLoader().load(saturnbumpMapUrl);
@@ -319,14 +319,14 @@ function createScene(canvas) {
     var saturnMaterial = new THREE.MeshPhongMaterial({ map: saturnTexture, bumpMap: saturnbumpMap, bumpScale: 0.06 });
     //var saturnMaterial = new THREE.MeshBasicMaterial({ map: saturnTexture });
     //------Saturn Ring---------//
-    var saturnRingTextureUrl = "../images/saturn_ring.png";
+    var saturnRingTextureUrl = "images/saturn_ring.png";
     var saturnRingTexture = new THREE.TextureLoader().load(saturnRingTextureUrl);
     //var saturnRingMaterial = new THREE.MeshPhongMaterial({ map: saturnRingTexture });
     var saturnRingMaterial = new THREE.MeshBasicMaterial({ map: saturnRingTexture });
 
     //------Uranus---------//
-    var uranusTextureUrl = "../images/uranus.jpg";
-    var uranusbumpMapUrl = "../images/uranus_bump.jpg";
+    var uranusTextureUrl = "images/uranus.jpg";
+    var uranusbumpMapUrl = "images/uranus_bump.jpg";
 
     var uranusTexture = new THREE.TextureLoader().load(uranusTextureUrl);
     var uranusbumpMap = new THREE.TextureLoader().load(uranusbumpMapUrl);
@@ -335,8 +335,8 @@ function createScene(canvas) {
     //var uranusMaterial = new THREE.MeshBasicMaterial({ map: uranusTexture });
 
     //------Neptune---------//
-    var neptuneTextureUrl = "../images/neptune.jpg";
-    var neptunebumpMapUrl = "../images/neptune_bump.jpg";
+    var neptuneTextureUrl = "images/neptune.jpg";
+    var neptunebumpMapUrl = "images/neptune_bump.jpg";
 
     var neptuneTexture = new THREE.TextureLoader().load(neptuneTextureUrl);
     var neptunebumpMap = new THREE.TextureLoader().load(neptunebumpMapUrl);
@@ -345,8 +345,8 @@ function createScene(canvas) {
     //var neptuneMaterial = new THREE.MeshBasicMaterial({ map: neptuneTexture });
 
     //------Pluto---------//
-    var plutoTextureUrl = "../images/pluto.jpg";
-    var plutobumpMapUrl = "../images/pluto_bump.jpg";
+    var plutoTextureUrl = "images/pluto.jpg";
+    var plutobumpMapUrl = "images/pluto_bump.jpg";
 
     var plutoTexture = new THREE.TextureLoader().load(plutoTextureUrl);
     var plutobumpMap = new THREE.TextureLoader().load(plutobumpMapUrl);
@@ -355,14 +355,14 @@ function createScene(canvas) {
     //var plutoMaterial = new THREE.MeshBasicMaterial({ map: plutoTexture });
 
     //------Asteroids---------//
-    var asteroidsTextureUrl = "../images/asteroids.jpg";
+    var asteroidsTextureUrl = "images/asteroids.jpg";
     var asteroidsTexture = new THREE.TextureLoader().load(asteroidsTextureUrl);
     var asteroidsMaterial = new THREE.MeshBasicMaterial({ map: asteroidsTexture });
 
     //-------moons---------//
     //--earth moon--/
-    var earthMoonTextureUrl = "../images/moon.jpg";
-    var earthMoonbumpMapUrl = "../images/moon_bump.jpg";
+    var earthMoonTextureUrl = "images/moon.jpg";
+    var earthMoonbumpMapUrl = "images/moon_bump.jpg";
 
     var earthMoonTexture = new THREE.TextureLoader().load(earthMoonTextureUrl);
     var earthMoonbumpMap = new THREE.TextureLoader().load(earthMoonbumpMapUrl);
@@ -370,16 +370,16 @@ function createScene(canvas) {
     var earthMoonMaterial = new THREE.MeshPhongMaterial({ map: earthMoonTexture, bumpMap: earthMoonbumpMap, bumpScale: 0.06 });
 
     //--mars moons--/
-    var marsMoon1TextureUrl = "../images/mars_moon_1.jpg";
-    var marsMoon1bumpMapUrl = "../images/mars_moon_1_bump.jpg";
+    var marsMoon1TextureUrl = "images/mars_moon_1.jpg";
+    var marsMoon1bumpMapUrl = "images/mars_moon_1_bump.jpg";
 
     var marsMoon1Texture = new THREE.TextureLoader().load(marsMoon1TextureUrl);
     var marsMoon1bumpMap = new THREE.TextureLoader().load(marsMoon1bumpMapUrl);
 
     var marsMoon1Material = new THREE.MeshPhongMaterial({ map: marsMoon1Texture, bumpMap: marsMoon1bumpMap, bumpScale: 0.06 });
 
-    var marsMoon2TextureUrl = "../images/mars_moon_2.jpg";
-    var marsMoon2bumpMapUrl = "../images/mars_moon_2_bump.jpg";
+    var marsMoon2TextureUrl = "images/mars_moon_2.jpg";
+    var marsMoon2bumpMapUrl = "images/mars_moon_2_bump.jpg";
 
     var marsMoon2Texture = new THREE.TextureLoader().load(marsMoon2TextureUrl);
     var marsMoon2bumpMap = new THREE.TextureLoader().load(marsMoon2bumpMapUrl);
@@ -388,8 +388,8 @@ function createScene(canvas) {
 
     //--generic moon--/
 
-    var genericMoonTextureUrl = "../images/mars_moon_1.jpg";
-    var genericMoonbumpMapUrl = "../images/mars_moon_1_bump.jpg";
+    var genericMoonTextureUrl = "images/mars_moon_1.jpg";
+    var genericMoonbumpMapUrl = "images/mars_moon_1_bump.jpg";
 
     var genericMoonTexture = new THREE.TextureLoader().load(genericMoonTextureUrl);
     var genericMoonbumpMap = new THREE.TextureLoader().load(genericMoonbumpMapUrl);
