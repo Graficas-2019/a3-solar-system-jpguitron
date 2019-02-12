@@ -35,8 +35,6 @@ plutoRotation = null,
 earthMoonRotationOrbit = null,
 marsMoon1RotationOrbit = null,
 marsMoon2RotationOrbit = null,
-genericMoon1RotationOrbit = null,
-genericMoon2RotationOrbit = null,
 
 
 sphere = null,
@@ -44,7 +42,7 @@ sphereEnvMapped = null,
 orbitControls = null;
 var moonsOrbits = [];
 
-var offset = 6;
+var offset = 10;
 var baseMercury = 13 + offset; 
 var baseVenus = 15 + offset*2; 
 var baseEarth = 17 + offset*3; 
@@ -130,12 +128,12 @@ function animate()
 
     //-------------Moons-----//
     earthMoonRotationOrbit.rotation.y  += angle; 
+    marsMoon1RotationOrbit.rotation.y += angle; 
     marsMoon2RotationOrbit.rotation.y += angle; 
-    genericMoon1RotationOrbit.rotation.y += angle; 
-    genericMoon2RotationOrbit.rotation.y += angle; 
+
     for (i = 0; i < moonsOrbits.length; i++) 
     { 
-        moonsOrbits [i] += angle;
+        moonsOrbits[i].rotation.y += angle;
     }
 
     //--------Planets orbits-------//
@@ -155,22 +153,34 @@ function animate()
 
 }
 
-function createMoon(size,genericMoonMaterial,actualPlanetRotation,posX, posY,posZ)
+function createMoon(size,posX, posY,posZ)
 {
 
-    actualMoonOrbit = new THREE.Object3D;
+    var genericMoonTextureUrl = "images/mars_moon_1.jpg";
+    var genericMoonbumpMapUrl = "images/mars_moon_1_bump.jpg";
+
+    var genericMoonTexture = new THREE.TextureLoader().load(genericMoonTextureUrl);
+    var genericMoonbumpMap = new THREE.TextureLoader().load(genericMoonbumpMapUrl);
+
+    var genericMoon = new THREE.MeshPhongMaterial({ map: genericMoonTexture, bumpMap: genericMoonbumpMap, bumpScale: 0.06 });
+
+    var actualMoonOrbit = new THREE.Object3D;
 
     genericMoonSize = new THREE.SphereGeometry(size, 50, 50);
-    genericMoonTextured = new THREE.Mesh(genericMoonSize, genericMoonMaterial ); 
+    genericMoonTextured = new THREE.Mesh(genericMoonSize, genericMoon ); 
 
-    actualMoonOrbit.add(genericMoon2Textured)
+    actualMoonOrbit.add(genericMoonTextured)
     actualMoonOrbit.position.x = posX;
     actualMoonOrbit.position.y = posY;
     actualMoonOrbit.position.z = posZ;
+
     moonsOrbits.push(actualMoonOrbit);
 
-    actualPlanetRotation.add(actualMoonOrbit);
+    return actualMoonOrbit;
 }
+
+
+
 
 function run() {
     requestAnimationFrame(function() { run(); });
@@ -184,6 +194,9 @@ function run() {
         // Update the camera controller
         orbitControls.update();
 }
+
+
+
 
 var directionalLight = null;
 var spotLight = null;
@@ -213,7 +226,7 @@ function createScene(canvas) {
     root = new THREE.Object3D;
     
     // light
-    pointLight = new THREE.PointLight (0xffffff, 5, 85);
+    pointLight = new THREE.PointLight (0xffffff, 5, 130);
     root.add(pointLight);
 
     //------------------------------groups------------------//
@@ -335,13 +348,19 @@ function createScene(canvas) {
     var saturnTexture = new THREE.TextureLoader().load(saturnTextureUrl);
     var saturnbumpMap = new THREE.TextureLoader().load(saturnbumpMapUrl);
 
+    
     var saturnMaterial = new THREE.MeshPhongMaterial({ map: saturnTexture, bumpMap: saturnbumpMap, bumpScale: 0.06 });
     //var saturnMaterial = new THREE.MeshBasicMaterial({ map: saturnTexture });
     //------Saturn Ring---------//
     var saturnRingTextureUrl = "images/saturn_ring.png";
     var saturnRingTexture = new THREE.TextureLoader().load(saturnRingTextureUrl);
     //var saturnRingMaterial = new THREE.MeshPhongMaterial({ map: saturnRingTexture });
-    var saturnRingMaterial = new THREE.MeshBasicMaterial({ map: saturnRingTexture });
+
+    saturnRingTexture.wrapS = saturnRingTexture.wrapT = THREE.RepeatWrapping;
+    saturnRingTexture.repeat.set(1, 1);
+    var color = 0xffffff;
+
+    var saturnRingMaterial = new THREE.MeshBasicMaterial({color:color, map:saturnRingTexture, side:THREE.DoubleSide, transparent: true, opacity: 0.7 });
 
     //------Uranus---------//
     var uranusTextureUrl = "images/uranus.jpg";
@@ -405,15 +424,6 @@ function createScene(canvas) {
 
     var marsMoon2Material = new THREE.MeshPhongMaterial({ map: marsMoon2Texture, bumpMap: marsMoon2bumpMap, bumpScale: 0.06 });
 
-    //--generic moon--/
-
-    var genericMoonTextureUrl = "images/mars_moon_1.jpg";
-    var genericMoonbumpMapUrl = "images/mars_moon_1_bump.jpg";
-
-    var genericMoonTexture = new THREE.TextureLoader().load(genericMoonTextureUrl);
-    var genericMoonbumpMap = new THREE.TextureLoader().load(genericMoonbumpMapUrl);
-
-    var genericMoonMaterial = new THREE.MeshPhongMaterial({ map: genericMoonTexture, bumpMap: genericMoonbumpMap, bumpScale: 0.06 });
 
     //---------------------------meshes-----------------//
 
@@ -425,12 +435,34 @@ function createScene(canvas) {
     sunTextured = new THREE.Mesh(sunSize, sunMaterial);
     sunRotation.add(sunTextured);
 
-        
-    var asteroids = new THREE.RingGeometry( baseMars+4-0.5,baseMars+4+0.5, 100, 12);
+    var as = 150
+    var angle = (2 * Math.PI) / as;
+    var radius = baseMars+4
 
-    var mesh = new THREE.Mesh( asteroids, asteroidsMaterial );
-    mesh.rotation.x = -(Math.PI / 2);
-    sunRotation.add(mesh)
+    var maxSize = 2;
+    var minSize = 0.01;
+    for(var i = 0; i <= as; i++)
+    {   
+
+        var genericMoonTextureUrl = "images/mars_moon_1.jpg";
+    
+        var genericMoonTexture = new THREE.TextureLoader().load(genericMoonTextureUrl);
+    
+        var genericMoon = new THREE.MeshBasicMaterial({ map: genericMoonTexture, side: THREE.DoubleSide, transparent: true, opacity: 0.7});
+        
+        
+        var randomVertex = Math.floor(Math.random() * 2) + 0;
+        var randomSize = (Math.random() * maxSize) + minSize;
+
+        var genericMoonSize = new THREE.IcosahedronGeometry(randomSize, randomVertex);
+
+        genericMoonTextured = new THREE.Mesh(genericMoonSize, genericMoon );
+        genericMoonTextured.position.x = Math.cos(angle*i + Math.PI/4)*radius; 
+        genericMoonTextured.position.z = Math.sin(angle*i + Math.PI/4) *radius; 
+
+        sunRotation.add( genericMoonTextured );
+    }
+
 
     //------Mercury---------//
     mercurySize = new THREE.SphereGeometry(0.5, 50, 50);
@@ -454,45 +486,48 @@ function createScene(canvas) {
     //------Earth---------//
     earthSize = new THREE.SphereGeometry(1, 50, 50);
     earthTextured = new THREE.Mesh(earthSize, earthMaterial); 
-    earthRotation.add(earthTextured)
+    earthRotation.add(earthTextured);
         //---- Earth moon---///
         earthMoonSize = new THREE.SphereGeometry(0.2, 50, 50);
         earthMoonTextured = new THREE.Mesh(earthMoonSize, earthMoonMaterial ); 
-        earthMoonRotationOrbit.add(earthMoonTextured)
+        earthMoonRotationOrbit.add(earthMoonTextured);
+        
         earthMoonRotationOrbit.position.x = 1.3;
         earthMoonRotationOrbit.position.z = 1.3;
-        earthRotation.add( earthMoonRotationOrbit)
+
+        earthRotation.add( earthMoonRotationOrbit);
 
 
     earthRotation.position.x = baseEarth;
     
-    earthRotationOrbit.add(earthRotation)
+    earthRotationOrbit.add(earthRotation);
     
-    earthRotationOrbit.add(createOrbits(baseEarth))
+    earthRotationOrbit.add(createOrbits(baseEarth));
 
     //------Mars---------//
     marsSize = new THREE.SphereGeometry(1, 50, 50);
     marsTextured = new THREE.Mesh(marsSize, marsMaterial); 
-    marsRotation.add(marsTextured)
+    marsRotation.add(marsTextured);
         //----Mars moon---///
 
         marsMoon1MoonSize = new THREE.SphereGeometry(0.3, 50, 50);
         marsMoon1MoonTextured = new THREE.Mesh(marsMoon1MoonSize, marsMoon1Material ); 
-        marsMoon1RotationOrbit.add( marsMoon1MoonTextured)
+        marsMoon1RotationOrbit.add( marsMoon1MoonTextured);
         marsMoon1RotationOrbit.position.x = 1.4;
         marsMoon1RotationOrbit.position.z = 1.4;
-        marsRotation.add(marsMoon1RotationOrbit)
+        marsRotation.add(marsMoon1RotationOrbit);
 
         marsMoon2MoonSize = new THREE.SphereGeometry(0.2, 50, 50);
         marsMoon2MoonTextured = new THREE.Mesh(marsMoon2MoonSize, marsMoon2Material ); 
-        marsMoon2RotationOrbit.add(marsMoon2MoonTextured)
+        marsMoon2RotationOrbit.add(marsMoon2MoonTextured);
         marsMoon2RotationOrbit.position.z = 1.3;
-        marsRotation.add( marsMoon2RotationOrbit)
+
+        marsRotation.add( marsMoon2RotationOrbit);
 
     marsRotation.position.x = baseMars;
-    marsRotationOrbit.add(marsRotation)
+    marsRotationOrbit.add(marsRotation);
 
-    marsRotationOrbit.add(createOrbits(baseMars))
+    marsRotationOrbit.add(createOrbits(baseMars));
 
     //------Jupiter---------//
     jupiterSize = new THREE.SphereGeometry(3, 50, 50);
@@ -500,43 +535,48 @@ function createScene(canvas) {
     jupiterRotation.add(jupiterTextured)
 
         //----jupiter moons---///
-        genericMoonSize = new THREE.SphereGeometry(0.4, 50, 50);
 
-        genericMoonTextured = new THREE.Mesh(genericMoonSize, genericMoonMaterial ); 
-        genericMoon1RotationOrbit.add(genericMoonTextured)
-        genericMoon1RotationOrbit.position.x = 3.4;
-        genericMoon1RotationOrbit.position.z = 3.5;
-
-        jupiterRotation.add(genericMoon1RotationOrbit)
-
-        genericMoon2Size = new THREE.SphereGeometry(0.2, 50, 50);
-        genericMoon2Textured = new THREE.Mesh(genericMoon2Size, genericMoonMaterial ); 
-
-        genericMoon2RotationOrbit.add(genericMoon2Textured)
-        genericMoon2RotationOrbit.position.x = 3.3;
-
-        jupiterRotation.add(genericMoon2RotationOrbit)
-
-        createMoon(0.3,genericMoonMaterial,jupiterRotation,3, 3,3)
-
+        jupiterRotation.add(createMoon(0.2,3, 0,0));
+        jupiterRotation.add(createMoon(0.4,3, 0,3));
+        jupiterRotation.add(createMoon(.6,3, 3,3));
+        jupiterRotation.add(createMoon(0.3,-3, -3,0));
+        jupiterRotation.add(createMoon(0.2,-3, 0,3));
+        
+        jupiterRotation.add(createMoon(0.3,3, -3,-3));
+        jupiterRotation.add(createMoon(0.3,3, 3,0));
+        jupiterRotation.add(createMoon(0.1,0, 3,-3));
+        jupiterRotation.add(createMoon(0.4,0, -3,3));
+        jupiterRotation.add(createMoon(0.2,0, -3,0));
 
     jupiterRotation.position.x = baseJupiter ;
-    jupiterRotationOrbit.add(jupiterRotation)
+    jupiterRotationOrbit.add(jupiterRotation);
 
-    jupiterRotationOrbit.add(createOrbits(baseJupiter))
+    jupiterRotationOrbit.add(createOrbits(baseJupiter));
 
 
     //------Saturn---------//
     saturnSize = new THREE.SphereGeometry(2, 50, 50);
     saturnTextured = new THREE.Mesh(saturnSize, saturnMaterial); 
 
-    var ring = new THREE.RingGeometry( 2.1, 2.5, 50, 12);
+    var ring = new THREE.PlaneGeometry(10, 10);
     var saturnRing = new THREE.Mesh( ring,saturnRingMaterial);
     saturnRing.material.opacity = 0.5;
     saturnRing.rotation.x = -(Math.PI /1.5);
 
     saturnRotation.add(saturnRing)
     saturnRotation.add(saturnTextured)
+
+    saturnRotation.add(createMoon(0.2,2.5, 0,0));
+    saturnRotation.add(createMoon(0.1,1.5, 0,2));
+    saturnRotation.add(createMoon(0.4,2, 2,2));
+    saturnRotation.add(createMoon(0.3,-1.5, -2,0));
+    saturnRotation.add(createMoon(0.2,-2, 0,2));
+    
+    saturnRotation.add(createMoon(0.3,2, -1.5,-2));
+    saturnRotation.add(createMoon(0.2,2, 2,0));
+    saturnRotation.add(createMoon(0.1,0, 2,-2));
+    saturnRotation.add(createMoon(0.4,0, -1.5,2));
+    saturnRotation.add(createMoon(0.2,0, -1.5,0));
 
     saturnRotation.position.x = baseSaturn;
     saturnRotationOrbit.add(saturnRotation)
@@ -553,6 +593,17 @@ function createScene(canvas) {
     uranusRotation.position.x = baseUranus;
     uranusRotationOrbit.add(uranusRotation)
 
+    uranusRotation.add(createMoon(0.2,1.5, 0,0));
+    uranusRotation.add(createMoon(0.3,1.5, 0,1));
+    uranusRotation.add(createMoon(0.2,1, 1,1));
+    uranusRotation.add(createMoon(0.3,-1.5, -1,0));
+    uranusRotation.add(createMoon(0.2,-1, 0,1));
+    uranusRotation.add(createMoon(0.3,1, -1.5,-1));
+    uranusRotation.add(createMoon(0.2,1, 1,0));
+    uranusRotation.add(createMoon(0.2,0, 1,-1));
+    uranusRotation.add(createMoon(0.1,0, -1.5,1));
+    uranusRotation.add(createMoon(0.2,0, -1.5,0));
+
     uranusRotationOrbit.add(createOrbits(baseUranus))
 
 
@@ -563,6 +614,17 @@ function createScene(canvas) {
     neptuneRotation.position.x = baseNeptune;
     neptuneRotationOrbit.add(neptuneRotation)
     
+    neptuneRotation.add(createMoon(0.1,1.5, 0,0));
+    neptuneRotation.add(createMoon(0.2,1, 0,1));
+    neptuneRotation.add(createMoon(0.1,1, -1,1));
+    neptuneRotation.add(createMoon(0.2,-1, 1,0));
+    neptuneRotation.add(createMoon(0.1,-1, 0,1));
+    neptuneRotation.add(createMoon(0.2,1, 1,-1));
+    neptuneRotation.add(createMoon(0.05,1, -1,0));
+    neptuneRotation.add(createMoon(0.1,0, -1,-1));
+    neptuneRotation.add(createMoon(0.05,0, 1,1));
+    neptuneRotation.add(createMoon(0.1,0, -1.5,0));
+
     neptuneRotationOrbit.add(createOrbits(baseNeptune))
     
 
@@ -573,6 +635,12 @@ function createScene(canvas) {
     plutoRotation.add(plutoTextured)
     plutoRotation.position.x = basePluto;
     plutoRotationOrbit.add(plutoRotation)
+
+    plutoRotation.add(createMoon(0.07,1, 0,-1));
+    plutoRotation.add(createMoon(0.05,1, -1,1));
+    plutoRotation.add(createMoon(0.2,0, -1,-1));
+    plutoRotation.add(createMoon(0.1,1, 1,1));
+    plutoRotation.add(createMoon(0.3,0, -1.4,0));
 
     plutoRotationOrbit.add(createOrbits(basePluto))
 
