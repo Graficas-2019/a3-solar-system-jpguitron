@@ -2,9 +2,6 @@
 Checar problema del anillo de saturno
 Preguntar por el cinturon de asteroides textura y bump map
 Preguntar cuantas lunas
-Preguntar sobre los controles
-Phong o lambert?
-el bump map del sol no sale
 */ 
 
 
@@ -45,7 +42,7 @@ genericMoon2RotationOrbit = null,
 sphere = null,
 sphereEnvMapped = null,
 orbitControls = null;
-
+var moonsOrbits = [];
 
 var offset = 6;
 var baseMercury = 13 + offset; 
@@ -131,10 +128,15 @@ function animate()
     neptuneRotation.rotation.y += angle;  
     plutoRotation.rotation.y += angle; 
 
+    //-------------Moons-----//
     earthMoonRotationOrbit.rotation.y  += angle; 
     marsMoon2RotationOrbit.rotation.y += angle; 
     genericMoon1RotationOrbit.rotation.y += angle; 
     genericMoon2RotationOrbit.rotation.y += angle; 
+    for (i = 0; i < moonsOrbits.length; i++) 
+    { 
+        moonsOrbits [i] += angle;
+    }
 
     //--------Planets orbits-------//
     mercuryRotationOrbit.rotation.y += angleRotationOrbit; 
@@ -151,9 +153,24 @@ function animate()
 
 
 
-
 }
 
+function createMoon(size,genericMoonMaterial,actualPlanetRotation,posX, posY,posZ)
+{
+
+    actualMoonOrbit = new THREE.Object3D;
+
+    genericMoonSize = new THREE.SphereGeometry(size, 50, 50);
+    genericMoonTextured = new THREE.Mesh(genericMoonSize, genericMoonMaterial ); 
+
+    actualMoonOrbit.add(genericMoon2Textured)
+    actualMoonOrbit.position.x = posX;
+    actualMoonOrbit.position.y = posY;
+    actualMoonOrbit.position.z = posZ;
+    moonsOrbits.push(actualMoonOrbit);
+
+    actualPlanetRotation.add(actualMoonOrbit);
+}
 
 function run() {
     requestAnimationFrame(function() { run(); });
@@ -229,11 +246,13 @@ function createScene(canvas) {
     neptuneRotationOrbit = new THREE.Object3D;
     plutoRotationOrbit = new THREE.Object3D;
 
+    //-----------moons--------------//
     earthMoonRotationOrbit = new THREE.Object3D;
     marsMoon1RotationOrbit = new THREE.Object3D;
     marsMoon2RotationOrbit = new THREE.Object3D;
     genericMoon1RotationOrbit = new THREE.Object3D;
     genericMoon2RotationOrbit = new THREE.Object3D;
+
 
 
     root.add(mercuryRotationOrbit);
@@ -492,11 +511,13 @@ function createScene(canvas) {
 
         genericMoon2Size = new THREE.SphereGeometry(0.2, 50, 50);
         genericMoon2Textured = new THREE.Mesh(genericMoon2Size, genericMoonMaterial ); 
+
         genericMoon2RotationOrbit.add(genericMoon2Textured)
         genericMoon2RotationOrbit.position.x = 3.3;
 
         jupiterRotation.add(genericMoon2RotationOrbit)
 
+        createMoon(0.3,genericMoonMaterial,jupiterRotation,3, 3,3)
 
 
     jupiterRotation.position.x = baseJupiter ;
